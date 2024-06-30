@@ -140,4 +140,4 @@ Bei Fehlern werden entsprechende HTTP-Statuscodes und Fehlermeldungen zurückgeg
 - **404 Not Found**: Wenn ein Blackboard nicht gefunden wurde.
 - **400 Bad Request**: Bei ungültigen Eingabedaten.
 - **409 Conflict**: Wenn ein Konflikt bei der Datenverarbeitung auftritt, z.B. wenn ein Blackboard mit demselben Namen bereits existiert.
-- **500 Internal Server Error**: Bei inter
+- **500 Internal Server Error**: Bei internen Serverfehlern.
