@@ -135,6 +135,29 @@ Die API verwendet HTTP und basiert auf dem REST-Architekturstil.
 
 Für eine vollständige Beschreibung der API-Schnittstellen und zulässigen Parameter besuchen Sie bitte die Swagger-Beschreibung unter [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) (nur verfügbar, wenn das Projekt läuft).
 
+### Blackboard Eigenschaften und Validierung
+
+Ein Blackboard im System hat bestimmte Validierungsregeln, um sicherzustellen, dass die Daten konsistent und sinnvoll sind:
+
+- **Name des Blackboards**:
+  - Der Name muss zwischen 3 und 50 Zeichen lang sein.
+  - Beispiel: `"Mein Blackboard"`, `"Projektnotizen"`
+
+- **Daten (Nachricht)**:
+  - Die Nachricht, die auf dem Blackboard gespeichert wird, muss zwischen 1 und 1000 Zeichen lang sein.
+  - Beispiel: `"Wichtige Notiz"`, `"Dies ist eine sehr lange Nachricht, die Details zu einem bestimmten Projekt enthält und sicherstellen muss, dass sie unter 1000 Zeichen bleibt."`
+
+### Validierung und Aktualisierung der Nachrichtenvalidität
+
+Der Status, ob eine Nachricht auf dem Blackboard noch gültig ist, wird durch einen gescheduleten Task überprüft und aktualisiert. Dieser Task läuft jede Sekunde und prüft die Gültigkeitsdauer der Nachrichten:
+
+- **Geplanter Task**:
+  - Ein Task läuft jede Sekunde und überprüft die Gültigkeit der Nachrichten auf den Blackboards.
+  - Wenn die Gültigkeitsdauer einer Nachricht abgelaufen ist, wird der Status entsprechend aktualisiert.
+  - Diese Überprüfung stellt sicher, dass die Daten auf den Blackboards stets aktuell und relevant sind.
+
+Dieser Mechanismus zur Überprüfung der Nachrichtenvalidität hilft dabei, die Konsistenz der gespeicherten Informationen zu gewährleisten und veraltete Daten automatisch zu erkennen und entsprechend zu behandeln.
+
 ### Fehlerverhalten
 Bei Fehlern werden entsprechende HTTP-Statuscodes und Fehlermeldungen zurückgegeben, z.B.:
 - **404 Not Found**: Wenn ein Blackboard nicht gefunden wurde.
