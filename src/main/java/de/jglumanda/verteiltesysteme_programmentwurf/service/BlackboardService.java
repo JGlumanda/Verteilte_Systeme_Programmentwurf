@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,7 +75,7 @@ public class BlackboardService {
             blackboard.setName(createBlackboardDTO.getName());
             blackboard.setData("");
             blackboard.setValidityInSeconds(createBlackboardDTO.getValidityInSeconds());
-            blackboard.setLastUpdated(Instant.now().getEpochSecond());
+            blackboard.setLastUpdated(System.currentTimeMillis());
             blackboard.setStatus(Status.VALID);
             return blackboardRepository.insert(blackboard);
         });
@@ -94,7 +93,7 @@ public class BlackboardService {
                     .orElseThrow(() -> new ResourceNotFoundException("Blackboard not found"));
 
             blackboard.setData(displayDataDTO.getData());
-            blackboard.setLastUpdated(Instant.now().getEpochSecond());
+            blackboard.setLastUpdated(System.currentTimeMillis());
             blackboard.setStatus(Status.VALID);
             return blackboardRepository.save(blackboard);
         });
@@ -110,7 +109,7 @@ public class BlackboardService {
                     .orElseThrow(() -> new ResourceNotFoundException("Blackboard not found"));
 
             blackboard.setData("");
-            blackboard.setLastUpdated(Instant.now().getEpochSecond());
+            blackboard.setLastUpdated(System.currentTimeMillis());
             blackboard.setStatus(Status.INVALID);
             blackboardRepository.save(blackboard);
         });
@@ -170,10 +169,6 @@ public class BlackboardService {
                 if (blackboard.getValidityInSeconds() > 0 &&
                         currentTime - blackboard.getLastUpdated() > blackboard.getValidityInSeconds() * 1000) {
                     blackboard.setStatus(Status.INVALID);
-                    blackboardRepository.save(blackboard);
-                } else if (blackboard.getStatus() == Status.INVALID &&
-                        currentTime - blackboard.getLastUpdated() <= blackboard.getValidityInSeconds() * 1000) {
-                    blackboard.setStatus(Status.VALID);
                     blackboardRepository.save(blackboard);
                 }
             });
