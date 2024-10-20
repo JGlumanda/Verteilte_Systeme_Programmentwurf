@@ -9,7 +9,7 @@ public class Blackboard {
     @MongoId
     private String name;
     private String data;
-    private long validityInSeconds;
-    private long lastUpdated;
+    private Long validityInSeconds;
+    private Long lastUpdated;
     private Status status;
 }
