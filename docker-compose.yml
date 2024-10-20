@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    ports:
+      - 8080:8080
+      - 5005:5005
+    depends_on:
+      - mongodb
+    environment:
+        - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/blackboardDB
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo@sha256:9342a9279a9841fc5f8192e49dcaaf9404e6bb3a90e8cf134eb96074830dd448
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+        - app-network
+
+volumes:
+    mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
